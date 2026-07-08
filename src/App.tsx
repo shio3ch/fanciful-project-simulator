@@ -1,0 +1,7 @@
+export default function App() {
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 p-6">
+      <h1 className="text-xl font-bold">空想プロジェクトシミュレーター</h1>
+    </div>
+  );
+}
