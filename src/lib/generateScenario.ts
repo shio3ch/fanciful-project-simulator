@@ -29,6 +29,10 @@ export async function generateScenario(
     throw new Error("生成が長すぎて途中で打ち切られました。もう一度お試しください。");
   }
 
+  if (message.stop_reason === "refusal") {
+    throw new Error("AIが生成を拒否しました。もう一度お試しください。");
+  }
+
   const textBlock = message.content.find((b) => b.type === "text");
   if (!textBlock || textBlock.type !== "text") {
     throw new Error("AIの応答にテキストが含まれていませんでした。");

@@ -115,11 +115,11 @@ export const ScenarioSchema = z.object({
     budget: z.string(),
     difficulty: z.string(),
   }),
-  members: z.array(MemberSchema),
+  members: z.array(MemberSchema).min(1),
   initialRelationships: z.array(RelationshipSchema),
   initialKpi: KpiSchema,
   initialTaskCount: z.number(),
-  episodes: z.array(EpisodeSchema),
+  episodes: z.array(EpisodeSchema).min(1),
   retrospective: z.object({
     summary: z.string(),
     mvp: z.object({ memberId: z.string(), reason: z.string() }),
