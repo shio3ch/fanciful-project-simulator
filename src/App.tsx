@@ -5,6 +5,8 @@ import { loadApiKey } from "./lib/storage";
 import { SAMPLE_SCENARIOS } from "./data/samples";
 import Header from "./components/Header";
 import ProjectSummary from "./components/ProjectSummary";
+import Timeline from "./components/Timeline";
+import EpisodeDetail from "./components/EpisodeDetail";
 
 export default function App() {
   const [scenario, setScenario] = useState<Scenario>(SAMPLE_SCENARIOS[0]);
@@ -50,6 +52,12 @@ export default function App() {
           snapshot={snapshot}
           currentPhase={episode.phase}
         />
+        <Timeline
+          scenario={scenario}
+          selectedIndex={selectedIndex}
+          onSelect={setSelectedIndex}
+        />
+        <EpisodeDetail episode={episode} members={scenario.members} />
       </main>
     </div>
   );
