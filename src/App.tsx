@@ -10,6 +10,7 @@ import EpisodeDetail from "./components/EpisodeDetail";
 import MemberList from "./components/MemberList";
 import HealthCheck from "./components/HealthCheck";
 import BurndownChart from "./components/BurndownChart";
+import RelationshipMap from "./components/RelationshipMap";
 
 export default function App() {
   const [scenario, setScenario] = useState<Scenario>(SAMPLE_SCENARIOS[0]);
@@ -57,7 +58,7 @@ export default function App() {
         />
         <div className="grid gap-4 lg:grid-cols-3">
           <MemberList members={scenario.members} />
-          <div className="lg:col-span-1">{/* Task 11 で RelationshipMap を配置 */}</div>
+          <RelationshipMap members={scenario.members} relationships={snapshot.relationships} />
           <HealthCheck series={series} selectedIndex={selectedIndex} />
         </div>
         <BurndownChart scenario={scenario} series={series} selectedIndex={selectedIndex} />
