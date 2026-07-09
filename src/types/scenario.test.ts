@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { ScenarioSchema } from "./scenario";
+import { ScenarioSchema, type Scenario } from "./scenario";
 
 export const minimalScenario = {
   project: {
@@ -41,7 +41,7 @@ export const minimalScenario = {
     finalScores: { delivery: 60, quality: 50, customerSatisfaction: 70, teamwork: 80, flameLevel: 90 },
     finalComment: "コメント",
   },
-};
+} satisfies Scenario;
 
 describe("ScenarioSchema", () => {
   test("正しいシナリオをパースできる", () => {
@@ -49,8 +49,8 @@ describe("ScenarioSchema", () => {
   });
 
   test("不正な projectStatus を拒否する", () => {
-    const bad = structuredClone(minimalScenario);
-    bad.episodes[0].projectStatus = "大勝利";
+    const bad: Record<string, unknown> = structuredClone(minimalScenario);
+    (bad.episodes as { projectStatus: string }[])[0].projectStatus = "大勝利";
     expect(() => ScenarioSchema.parse(bad)).toThrow();
   });
 
