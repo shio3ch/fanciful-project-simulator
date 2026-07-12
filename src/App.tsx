@@ -88,7 +88,7 @@ export default function App() {
           snapshot={snapshot}
           currentPhase={episode.phase}
         />
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid items-start gap-4 lg:grid-cols-3">
           <MemberList members={scenario.members} />
           <RelationshipMap
             members={scenario.members}
