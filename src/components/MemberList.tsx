@@ -17,11 +17,25 @@ function MemberCard({ member }: { member: Member }) {
           <div className="text-xs text-slate-500">{member.role}</div>
         </div>
       </div>
-      <p className="mt-2 text-xs italic text-slate-600">「{member.catchphrase}」</p>
-      <dl className="mt-2 space-y-0.5 text-xs text-slate-600">
-        <div>性格: {member.personality}</div>
-        <div>得意: {member.strengths} / 苦手: {member.weaknesses}</div>
-        <div className="font-medium text-indigo-700">✨ {member.specialSkill}</div>
+      <p className="mt-2 text-[13px] leading-relaxed italic text-slate-600">
+        「{member.catchphrase}」
+      </p>
+      <dl className="mt-2 space-y-1 text-[13px] leading-relaxed text-slate-600">
+        <div>
+          <dt className="inline font-medium text-slate-500">性格: </dt>
+          <dd className="inline">{member.personality}</dd>
+        </div>
+        <div>
+          <dt className="inline font-medium text-slate-500">得意: </dt>
+          <dd className="inline">{member.strengths}</dd>
+        </div>
+        <div>
+          <dt className="inline font-medium text-slate-500">苦手: </dt>
+          <dd className="inline">{member.weaknesses}</dd>
+        </div>
+        <div className="rounded bg-indigo-50 px-2 py-1 font-medium text-indigo-700">
+          ✨ {member.specialSkill}
+        </div>
       </dl>
       <div className="mt-2 space-y-1">
         {STAT_LABELS.map(([key, label]) => (
