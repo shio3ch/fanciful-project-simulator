@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { clearApiKey, loadApiKey, saveApiKey } from "./storage";
+import {
+  clearApiKey,
+  loadApiKey,
+  loadApiSettings,
+  saveApiKey,
+  saveApiSettings,
+} from "./storage";
 
 const store = new Map<string, string>();
 
@@ -16,6 +22,22 @@ describe("storage", () => {
   test("保存して読み出せる", () => {
     saveApiKey("sk-ant-test");
     expect(loadApiKey()).toBe("sk-ant-test");
+  });
+
+  test("OpenAIのプロバイダーとキーを保存して読み出せる", () => {
+    saveApiSettings({ provider: "openai", apiKey: "sk-openai-test" });
+    expect(loadApiSettings()).toEqual({
+      provider: "openai",
+      apiKey: "sk-openai-test",
+    });
+  });
+
+  test("旧形式のAnthropicキーを引き継げる", () => {
+    store.set("fps.apiKey", "sk-ant-legacy");
+    expect(loadApiSettings()).toEqual({
+      provider: "anthropic",
+      apiKey: "sk-ant-legacy",
+    });
   });
 
   test("未保存ならnull", () => {

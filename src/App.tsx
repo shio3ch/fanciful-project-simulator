@@ -2,7 +2,13 @@ import { useMemo, useState } from "react";
 import type { Scenario } from "./types/scenario";
 import { computeSeries } from "./lib/computeState";
 import { generateScenario } from "./lib/generateScenario";
-import { clearApiKey, loadApiKey, saveApiKey } from "./lib/storage";
+import {
+  clearApiSettings,
+  loadApiSettings,
+  saveApiSettings,
+  type ApiProvider,
+  type ApiSettings,
+} from "./lib/storage";
 import { SAMPLE_SCENARIOS } from "./data/samples";
 import Header from "./components/Header";
 import ProjectSummary from "./components/ProjectSummary";
@@ -19,7 +25,9 @@ import GeneratingOverlay from "./components/GeneratingOverlay";
 export default function App() {
   const [scenario, setScenario] = useState<Scenario>(SAMPLE_SCENARIOS[0]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [apiKey, setApiKey] = useState<string>(() => loadApiKey() ?? "");
+  const [apiSettings, setApiSettings] = useState<ApiSettings>(() =>
+    loadApiSettings() ?? { provider: "anthropic", apiKey: "" },
+  );
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [progressChars, setProgressChars] = useState(0);
@@ -36,23 +44,24 @@ export default function App() {
     setError(null);
   }
 
-  function handleSaveSettings(key: string, persist: boolean) {
-    setApiKey(key);
-    if (persist && key) {
-      saveApiKey(key);
+  function handleSaveSettings(provider: ApiProvider, apiKey: string, persist: boolean) {
+    const settings = { provider, apiKey };
+    setApiSettings(settings);
+    if (persist && apiKey) {
+      saveApiSettings(settings);
     } else {
-      clearApiKey();
+      clearApiSettings();
     }
     setSettingsOpen(false);
   }
 
   async function handleGenerate() {
-    if (!apiKey || generating) return;
+    if (!apiSettings.apiKey || generating) return;
     setGenerating(true);
     setProgressChars(0);
     setError(null);
     try {
-      const next = await generateScenario(apiKey, setProgressChars);
+      const next = await generateScenario(apiSettings, setProgressChars);
       loadScenario(next);
     } catch (e) {
       setError(
@@ -72,7 +81,7 @@ export default function App() {
         onGenerate={handleGenerate}
         onSelectSample={(i) => loadScenario(SAMPLE_SCENARIOS[i])}
         generating={generating}
-        hasApiKey={apiKey.length > 0}
+        hasApiKey={apiSettings.apiKey.length > 0}
       />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 p-4">
         {error && (
@@ -111,7 +120,8 @@ export default function App() {
       </main>
       {settingsOpen && (
         <SettingsModal
-          apiKey={apiKey}
+          provider={apiSettings.provider}
+          apiKey={apiSettings.apiKey}
           onSave={handleSaveSettings}
           onClose={() => setSettingsOpen(false)}
         />

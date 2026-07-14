@@ -1,14 +1,18 @@
 import { useState } from "react";
+import type { ApiProvider } from "../lib/storage";
 
 export default function SettingsModal({
+  provider,
   apiKey,
   onSave,
   onClose,
 }: {
+  provider: ApiProvider;
   apiKey: string;
-  onSave: (key: string, persist: boolean) => void;
+  onSave: (provider: ApiProvider, key: string, persist: boolean) => void;
   onClose: () => void;
 }) {
+  const [selectedProvider, setSelectedProvider] = useState(provider);
   const [value, setValue] = useState(apiKey);
   const [persist, setPersist] = useState(false);
 
@@ -23,12 +27,23 @@ export default function SettingsModal({
       >
         <h2 className="text-base font-bold">⚙️ 設定</h2>
         <label className="mt-4 block text-sm font-medium">
-          Anthropic APIキー
+          AIプロバイダー
+          <select
+            value={selectedProvider}
+            onChange={(e) => setSelectedProvider(e.target.value as ApiProvider)}
+            className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
+          >
+            <option value="anthropic">Anthropic</option>
+            <option value="openai">OpenAI</option>
+          </select>
+        </label>
+        <label className="mt-4 block text-sm font-medium">
+          {selectedProvider === "anthropic" ? "Anthropic" : "OpenAI"} APIキー
           <input
             type="password"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="sk-ant-..."
+            placeholder={selectedProvider === "anthropic" ? "sk-ant-..." : "sk-..."}
             className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           />
         </label>
@@ -41,7 +56,9 @@ export default function SettingsModal({
           このブラウザに保存する（localStorage）
         </label>
         <p className="mt-3 rounded-md bg-amber-50 p-2 text-xs text-amber-800">
-          キーはこのブラウザから api.anthropic.com へ直接送信され、他のサーバーには送られません。
+          キーはこのブラウザから
+          {selectedProvider === "anthropic" ? " api.anthropic.com " : " api.openai.com "}
+          へ直接送信され、他のサーバーには送られません。
           コンソールで<b>使用上限付きのAPIキー</b>を作成して使うことを推奨します。
         </p>
         <div className="mt-4 flex justify-end gap-2">
@@ -52,7 +69,7 @@ export default function SettingsModal({
             キャンセル
           </button>
           <button
-            onClick={() => onSave(value.trim(), persist)}
+            onClick={() => onSave(selectedProvider, value.trim(), persist)}
             className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
           >
             保存
