@@ -22,13 +22,15 @@ export default function GeneratingOverlay({ progressChars }: { progressChars: nu
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-white/90">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600" />
-      <p className="text-sm font-medium text-slate-700">{PHASES[phaseIndex]}</p>
-      <p className="text-xs text-slate-400">
-        {progressChars > 0 ? `${progressChars.toLocaleString()} 文字 生成済み` : "接続中…"}
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-surface/90">
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-accent/30 border-t-accent" />
+      <p className="text-sm font-medium">{PHASES[phaseIndex]}</p>
+      <p className="text-xs text-ink-muted">
+        {progressChars > 0
+          ? `${progressChars.toLocaleString()} 文字 生成済み`
+          : "接続中…"}
       </p>
-      <p className="text-xs text-slate-400">生成には1〜3分ほどかかります</p>
+      <p className="text-xs text-ink-muted">生成には1〜3分ほどかかります</p>
     </div>
   );
 }

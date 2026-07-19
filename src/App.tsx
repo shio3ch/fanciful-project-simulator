@@ -123,7 +123,7 @@ export default function App() {
       />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 p-4">
         {error && (
-          <div className="flex items-start justify-between gap-3 rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          <div className="flex items-start justify-between gap-3 rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-500">
             <span>{error.message}</span>
             {error.action === "retry" ? (
               <button onClick={handleGenerate} className="shrink-0 font-bold underline">
