@@ -1,12 +1,12 @@
 import type { Scenario } from "../types/scenario";
 import type { SnapshotState } from "../lib/computeState";
-import { STATUS_COLORS } from "../lib/ui";
+import { STATUS_EMOJI } from "../lib/ui";
 
-function Item({ label, value }: { label: string; value: string }) {
+function StatChip({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <dt className="text-xs text-slate-500">{label}</dt>
-      <dd className="text-sm font-medium">{value}</dd>
+    <div className="rounded-lg border border-line bg-card/70 px-3 py-2">
+      <dt className="text-[11px] text-ink-muted">{label}</dt>
+      <dd className="mt-0.5 text-sm font-semibold">{value}</dd>
     </div>
   );
 }
@@ -21,23 +21,31 @@ export default function ProjectSummary({
   currentPhase: string;
 }) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <h2 className="text-base font-bold">{scenario.project.name}</h2>
-        <span
-          className={`rounded-full border px-3 py-0.5 text-xs font-bold ${STATUS_COLORS[snapshot.projectStatus]}`}
-        >
-          {snapshot.projectStatus}
-        </span>
+    <section className="relative overflow-hidden rounded-2xl border border-line bg-card p-5 sm:p-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-accent-soft to-transparent"
+      />
+      <div className="relative">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            {scenario.project.name}
+          </h2>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-accent bg-accent-soft px-3.5 py-1 text-sm font-bold text-accent-ink">
+            {STATUS_EMOJI[snapshot.projectStatus]} {snapshot.projectStatus}
+          </span>
+        </div>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-muted">
+          {scenario.project.overview}
+        </p>
+        <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
+          <StatChip label="顧客" value={scenario.project.client} />
+          <StatChip label="開発期間" value={scenario.project.period} />
+          <StatChip label="予算" value={scenario.project.budget} />
+          <StatChip label="難易度" value={scenario.project.difficulty} />
+          <StatChip label="現在工程" value={currentPhase} />
+        </dl>
       </div>
-      <p className="mt-1 text-sm text-slate-600">{scenario.project.overview}</p>
-      <dl className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
-        <Item label="顧客" value={scenario.project.client} />
-        <Item label="開発期間" value={scenario.project.period} />
-        <Item label="予算" value={scenario.project.budget} />
-        <Item label="難易度" value={scenario.project.difficulty} />
-        <Item label="現在工程" value={currentPhase} />
-      </dl>
     </section>
   );
 }

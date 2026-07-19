@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 import {
-  STATUS_COLORS,
   STATUS_KEYS,
   STATUS_EMOJI,
   REL_COLORS,
@@ -10,12 +9,6 @@ import {
 import { ProjectStatusSchema, RelationTypeSchema } from "../types/scenario";
 
 describe("ui", () => {
-  test("全projectStatusに配色がある", () => {
-    for (const s of ProjectStatusSchema.options) {
-      expect(STATUS_COLORS[s]).toBeTruthy();
-    }
-  });
-
   test("全relationTypeに配色がある", () => {
     for (const t of RelationTypeSchema.options) {
       expect(REL_COLORS[t]).toBeTruthy();

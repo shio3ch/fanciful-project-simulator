@@ -1,15 +1,5 @@
 import type { ProjectStatus, RelationType } from "../types/scenario";
 
-export const STATUS_COLORS: Record<ProjectStatus, string> = {
-  順調: "bg-emerald-100 text-emerald-800 border-emerald-300",
-  少し怪しい: "bg-lime-100 text-lime-800 border-lime-300",
-  黄色信号: "bg-amber-100 text-amber-800 border-amber-300",
-  炎上中: "bg-orange-100 text-orange-800 border-orange-300",
-  崩壊寸前: "bg-red-100 text-red-800 border-red-300",
-  奇跡の復活: "bg-sky-100 text-sky-800 border-sky-300",
-  無事リリース: "bg-emerald-100 text-emerald-800 border-emerald-300",
-};
-
 export type StatusKey =
   | "calm"
   | "hazy"

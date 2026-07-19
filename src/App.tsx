@@ -34,6 +34,7 @@ import {
   OPENAI_LIMITS_URL,
   type GenerationErrorDetails,
 } from "./lib/generationError";
+import { STATUS_KEYS } from "./lib/ui";
 
 export default function App() {
   const [scenario, setScenario] = useState<Scenario>(SAMPLE_SCENARIOS[0]);
@@ -107,7 +108,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-surface text-ink">
+    <div
+      className="min-h-screen bg-surface text-ink"
+      data-status={STATUS_KEYS[snapshot.projectStatus]}
+    >
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
         onGenerate={handleGenerate}
