@@ -417,7 +417,7 @@ Expected: PASS
           var pref = localStorage.getItem("fps.theme");
           var dark =
             pref === "dark" ||
-            ((pref === null || pref === "system") &&
+            (pref !== "light" &&
               window.matchMedia("(prefers-color-scheme: dark)").matches);
           if (dark) document.documentElement.dataset.theme = "dark";
         } catch (e) {}
