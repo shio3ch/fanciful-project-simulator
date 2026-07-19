@@ -1,4 +1,12 @@
-export function buildScenarioPrompt(): string {
+type ScenarioPromptOptions = {
+  nullableKpiDelta?: boolean;
+};
+
+export function buildScenarioPrompt(options: ScenarioPromptOptions = {}): string {
+  const unchangedKpiInstruction = options.nullableKpiDelta
+    ? "変化しない項目は null にする（全項目を必ず出力する）"
+    : "変化しない項目は省略可";
+
   return `あなたは架空のシステム開発プロジェクトを生成するゲームマスターです。
 エンジニアが思わず笑ってしまう「開発現場あるある」に満ちた、架空プロジェクトの一部始終をシミュレーションしてください。
 
@@ -18,7 +26,7 @@ export function buildScenarioPrompt(): string {
    - summary は2〜3行、story は150〜300字の読み物
    - chatLog はSlack風の会話3〜5件（オチをつける）
    - minutes は会議議事録風の箇条書き2〜4件
-   - kpiDelta は -30〜+30 程度の変化（変化しない項目は省略可）
+   - kpiDelta は -30〜+30 程度の変化（${unchangedKpiInstruction}）
    - taskDelta はタスク増減（仕様追加で増、消化で減）
    - relationshipChanges はメンバーIDを参照し、delta は -30〜+30
    - projectStatus は物語の起伏に合わせる: 序盤は順調、中盤で炎上中〜崩壊寸前まで悪化し、終盤に奇跡の復活を経て無事リリースで終わる

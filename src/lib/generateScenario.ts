@@ -3,6 +3,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { ScenarioSchema, type Scenario } from "../types/scenario";
+import { normalizeOpenAIScenario, OpenAIScenarioSchema } from "./openaiScenario";
 import { buildScenarioPrompt } from "./prompt";
 import type { ApiSettings } from "./storage";
 
@@ -65,9 +66,9 @@ async function generateWithOpenAI(
   const stream = client.responses
     .stream({
       model: "gpt-5.4",
-      input: [{ role: "user", content: buildScenarioPrompt() }],
+      input: [{ role: "user", content: buildScenarioPrompt({ nullableKpiDelta: true }) }],
       max_output_tokens: 64000,
-      text: { format: zodTextFormat(ScenarioSchema, "scenario") },
+      text: { format: zodTextFormat(OpenAIScenarioSchema, "scenario") },
     })
     .on("response.output_text.delta", (event) => {
       received += event.delta.length;
@@ -82,5 +83,5 @@ async function generateWithOpenAI(
     throw new Error("AIの応答をシナリオとして読み取れませんでした。");
   }
 
-  return ScenarioSchema.parse(response.output_parsed);
+  return normalizeOpenAIScenario(response.output_parsed);
 }
