@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Scenario } from "./types/scenario";
 import { computeSeries } from "./lib/computeState";
 import { generateScenario } from "./lib/generateScenario";
@@ -9,6 +9,13 @@ import {
   type ApiProvider,
   type ApiSettings,
 } from "./lib/storage";
+import {
+  loadThemePreference,
+  nextThemePreference,
+  resolveTheme,
+  saveThemePreference,
+  type ThemePreference,
+} from "./lib/theme";
 import { SAMPLE_SCENARIOS } from "./data/samples";
 import Header from "./components/Header";
 import ProjectSummary from "./components/ProjectSummary";
@@ -38,6 +45,28 @@ export default function App() {
   const [generating, setGenerating] = useState(false);
   const [progressChars, setProgressChars] = useState(0);
   const [error, setError] = useState<GenerationErrorDetails | null>(null);
+  const [themePref, setThemePref] = useState<ThemePreference>(() =>
+    loadThemePreference(),
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      document.documentElement.dataset.theme = resolveTheme(
+        themePref,
+        media.matches,
+      );
+    };
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, [themePref]);
+
+  function handleCycleTheme() {
+    const next = nextThemePreference(themePref);
+    setThemePref(next);
+    saveThemePreference(next);
+  }
 
   const series = useMemo(() => computeSeries(scenario), [scenario]);
   const snapshot = series[selectedIndex];
@@ -78,13 +107,15 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-surface text-ink">
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
         onGenerate={handleGenerate}
         onSelectSample={(i) => loadScenario(SAMPLE_SCENARIOS[i])}
         generating={generating}
         hasApiKey={apiSettings.apiKey.length > 0}
+        themePref={themePref}
+        onCycleTheme={handleCycleTheme}
       />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 p-4">
         {error && (
