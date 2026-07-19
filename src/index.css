@@ -141,3 +141,8 @@
 .recharts-tooltip-cursor {
   stroke: var(--line);
 }
+
+/* ---- xyflow のテーマ対応 ---- */
+.react-flow__background circle {
+  fill: var(--line);
+}

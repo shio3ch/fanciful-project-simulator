@@ -30,11 +30,11 @@ export const STATUS_EMOJI: Record<ProjectStatus, string> = {
 };
 
 export const REL_COLORS: Record<RelationType, string> = {
-  尊敬: "#0ea5e9",
-  信頼: "#10b981",
-  苦手: "#f59e0b",
-  ライバル: "#8b5cf6",
-  仲良し: "#ec4899",
+  尊敬: "var(--rel-respect)",
+  信頼: "var(--rel-trust)",
+  苦手: "var(--rel-awkward)",
+  ライバル: "var(--rel-rival)",
+  仲良し: "var(--rel-buddy)",
 };
 
 export function formatDelta(v: number): string {
