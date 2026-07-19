@@ -4,6 +4,7 @@ import {
   STATUS_EMOJI,
   REL_COLORS,
   deltaColor,
+  deltaArrow,
   formatDelta,
 } from "./ui";
 import { ProjectStatusSchema, RelationTypeSchema } from "../types/scenario";
@@ -23,6 +24,12 @@ describe("ui", () => {
 
   test("deltaColor は正負でクラスが変わる", () => {
     expect(deltaColor(10)).not.toBe(deltaColor(-10));
+  });
+
+  test("deltaArrow は正負で矢印が変わる", () => {
+    expect(deltaArrow(5)).toBe("▲");
+    expect(deltaArrow(-5)).toBe("▼");
+    expect(deltaArrow(0)).toBe("—");
   });
 
   test("全projectStatusにステータスキーがある", () => {

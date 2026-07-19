@@ -1,5 +1,5 @@
 import { KPI_KEYS, KPI_LABELS, type Episode, type Member } from "../types/scenario";
-import { deltaColor, formatDelta } from "../lib/ui";
+import { deltaArrow, deltaColor, formatDelta } from "../lib/ui";
 
 export default function EpisodeDetail({
   episode,
@@ -12,29 +12,35 @@ export default function EpisodeDetail({
     members.find((m) => m.id === id)?.name ?? id;
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-bold">{episode.headline}</h2>
+    <section className="rounded-2xl border border-line bg-card p-5 sm:p-6">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+          {episode.headline}
+        </h2>
         {episode.tags.map((t) => (
           <span
             key={t}
-            className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600"
+            className="rounded-full bg-card-raised px-2.5 py-0.5 text-xs text-ink-muted"
           >
             #{t}
           </span>
         ))}
       </div>
-      <p className="mt-2 text-sm font-medium text-slate-600">{episode.summary}</p>
-      <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed">{episode.story}</p>
+      <p className="mt-2 text-sm font-medium text-ink-muted">{episode.summary}</p>
+      <p className="mt-3 whitespace-pre-wrap text-[15px] leading-7">
+        {episode.story}
+      </p>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         <div>
-          <h3 className="text-xs font-bold text-slate-500">💬 チャット抜粋</h3>
-          <div className="mt-2 space-y-2 rounded-md bg-slate-50 p-3">
+          <h3 className="text-xs font-bold text-ink-muted">💬 チャット抜粋</h3>
+          <div className="mt-2 space-y-2 rounded-xl bg-card-raised/60 p-3">
             {episode.chatLog.map((c, i) => (
               <div key={i} className="text-sm">
-                <span className="font-bold text-slate-700">{c.speaker}</span>
-                <p className="mt-0.5 rounded-md bg-white px-3 py-1.5 shadow-sm">
+                <span className="text-xs font-bold text-ink-muted">
+                  {c.speaker}
+                </span>
+                <p className="mt-0.5 rounded-2xl rounded-tl-sm border border-line bg-card px-3 py-2 shadow-sm">
                   {c.message}
                 </p>
               </div>
@@ -43,34 +49,48 @@ export default function EpisodeDetail({
         </div>
         <div className="space-y-4">
           <div>
-            <h3 className="text-xs font-bold text-slate-500">📝 議事録抜粋</h3>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+            <h3 className="text-xs font-bold text-ink-muted">📝 議事録抜粋</h3>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
               {episode.minutes.map((m, i) => (
                 <li key={i}>{m}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-xs font-bold text-slate-500">📊 KPI変化</h3>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {KPI_KEYS.filter((k) => episode.kpiDelta[k] !== undefined).map((k) => (
-                <span key={k} className={`text-sm font-bold ${deltaColor(episode.kpiDelta[k]!)}`}>
-                  {KPI_LABELS[k]} {formatDelta(episode.kpiDelta[k]!)}
-                </span>
-              ))}
-              <span className={`text-sm font-bold ${deltaColor(-episode.taskDelta)}`}>
-                残タスク {formatDelta(episode.taskDelta)}
+            <h3 className="text-xs font-bold text-ink-muted">📊 KPI変化</h3>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {KPI_KEYS.filter((k) => episode.kpiDelta[k] !== undefined).map(
+                (k) => (
+                  <span
+                    key={k}
+                    className={`rounded-md bg-card-raised px-2 py-1 text-sm font-bold ${deltaColor(episode.kpiDelta[k]!)}`}
+                  >
+                    {KPI_LABELS[k]} {deltaArrow(episode.kpiDelta[k]!)}
+                    {formatDelta(episode.kpiDelta[k]!)}
+                  </span>
+                ),
+              )}
+              <span
+                className={`rounded-md bg-card-raised px-2 py-1 text-sm font-bold ${deltaColor(-episode.taskDelta)}`}
+              >
+                残タスク {deltaArrow(episode.taskDelta)}
+                {formatDelta(episode.taskDelta)}
               </span>
             </div>
           </div>
           {episode.relationshipChanges.length > 0 && (
             <div>
-              <h3 className="text-xs font-bold text-slate-500">🤝 人間関係の変化</h3>
+              <h3 className="text-xs font-bold text-ink-muted">
+                🤝 人間関係の変化
+              </h3>
               <ul className="mt-2 space-y-1 text-sm">
                 {episode.relationshipChanges.map((c, i) => (
                   <li key={i}>
                     {nameOf(c.from)} → {nameOf(c.to)}（{c.type}{" "}
-                    <span className={deltaColor(c.delta)}>{formatDelta(c.delta)}</span>）
+                    <span className={deltaColor(c.delta)}>
+                      {formatDelta(c.delta)}
+                    </span>
+                    ）
                   </li>
                 ))}
               </ul>

@@ -44,7 +44,13 @@ export function formatDelta(v: number): string {
 }
 
 export function deltaColor(v: number): string {
-  if (v > 0) return "text-emerald-600";
-  if (v < 0) return "text-red-600";
-  return "text-slate-500";
+  if (v > 0) return "text-emerald-500";
+  if (v < 0) return "text-red-500";
+  return "text-ink-muted";
+}
+
+export function deltaArrow(v: number): string {
+  if (v > 0) return "▲";
+  if (v < 0) return "▼";
+  return "—";
 }
