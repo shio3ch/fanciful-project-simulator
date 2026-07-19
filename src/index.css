@@ -120,3 +120,24 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
 }
+
+/* ---- recharts のテーマ対応 ----
+   SVG presentation attribute は var() 非対応のため CSS で上書きする */
+.recharts-cartesian-axis-tick text {
+  fill: var(--ink-muted);
+}
+.recharts-reference-line line {
+  stroke: var(--accent);
+}
+.recharts-reference-line text {
+  fill: var(--accent);
+}
+.recharts-area-curve {
+  stroke: var(--accent);
+}
+.recharts-area-area {
+  fill: var(--accent-soft);
+}
+.recharts-tooltip-cursor {
+  stroke: var(--line);
+}

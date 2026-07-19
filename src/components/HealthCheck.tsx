@@ -29,15 +29,17 @@ export default function HealthCheck({
   const data = series.map((s, i) => ({ name: `${i + 1}`, ...s.kpi }));
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-4">
-      <h2 className="mb-3 text-sm font-bold text-slate-700">🩺 プロジェクト健康診断</h2>
+    <section className="rounded-2xl border border-line bg-card p-4">
+      <h2 className="mb-3 text-sm font-bold text-ink-muted">
+        🩺 プロジェクト健康診断
+      </h2>
       <div className="space-y-1.5">
         {KPI_KEYS.map((k) => (
           <div key={k} className="flex items-center gap-2 text-xs">
-            <span className="w-20 text-slate-500">{KPI_LABELS[k]}</span>
-            <div className="h-2 flex-1 rounded bg-slate-100">
+            <span className="w-20 text-ink-muted">{KPI_LABELS[k]}</span>
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-line/60">
               <div
-                className="h-2 rounded transition-all"
+                className="h-full rounded-full transition-all"
                 style={{ width: `${current[k]}%`, backgroundColor: LINE_COLORS[k] }}
               />
             </div>
@@ -52,8 +54,15 @@ export default function HealthCheck({
             <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
             <Tooltip
               formatter={(v, name) => [v, KPI_LABELS[name as (typeof KPI_KEYS)[number]]]}
+              contentStyle={{
+                backgroundColor: "var(--card)",
+                border: "1px solid var(--line)",
+                borderRadius: 8,
+                fontSize: 12,
+              }}
+              labelStyle={{ color: "var(--ink-muted)" }}
             />
-            <ReferenceLine x={`${selectedIndex + 1}`} stroke="#94a3b8" strokeDasharray="4 4" />
+            <ReferenceLine x={`${selectedIndex + 1}`} strokeDasharray="4 4" />
             {KPI_KEYS.map((k) => (
               <Line
                 key={k}
