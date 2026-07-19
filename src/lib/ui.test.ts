@@ -1,5 +1,12 @@
 import { describe, expect, test } from "vitest";
-import { STATUS_COLORS, REL_COLORS, deltaColor, formatDelta } from "./ui";
+import {
+  STATUS_COLORS,
+  STATUS_KEYS,
+  STATUS_EMOJI,
+  REL_COLORS,
+  deltaColor,
+  formatDelta,
+} from "./ui";
 import { ProjectStatusSchema, RelationTypeSchema } from "../types/scenario";
 
 describe("ui", () => {
@@ -23,5 +30,17 @@ describe("ui", () => {
 
   test("deltaColor は正負でクラスが変わる", () => {
     expect(deltaColor(10)).not.toBe(deltaColor(-10));
+  });
+
+  test("全projectStatusにステータスキーがある", () => {
+    for (const s of ProjectStatusSchema.options) {
+      expect(STATUS_KEYS[s]).toBeTruthy();
+    }
+  });
+
+  test("全projectStatusにバッジ絵文字がある", () => {
+    for (const s of ProjectStatusSchema.options) {
+      expect(STATUS_EMOJI[s]).toBeTruthy();
+    }
   });
 });

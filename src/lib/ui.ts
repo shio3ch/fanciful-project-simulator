@@ -10,6 +10,35 @@ export const STATUS_COLORS: Record<ProjectStatus, string> = {
   無事リリース: "bg-emerald-100 text-emerald-800 border-emerald-300",
 };
 
+export type StatusKey =
+  | "calm"
+  | "hazy"
+  | "caution"
+  | "flame"
+  | "collapse"
+  | "miracle"
+  | "release";
+
+export const STATUS_KEYS: Record<ProjectStatus, StatusKey> = {
+  順調: "calm",
+  少し怪しい: "hazy",
+  黄色信号: "caution",
+  炎上中: "flame",
+  崩壊寸前: "collapse",
+  奇跡の復活: "miracle",
+  無事リリース: "release",
+};
+
+export const STATUS_EMOJI: Record<ProjectStatus, string> = {
+  順調: "✅",
+  少し怪しい: "🤔",
+  黄色信号: "⚠️",
+  炎上中: "🔥",
+  崩壊寸前: "💀",
+  奇跡の復活: "🌈",
+  無事リリース: "🎉",
+};
+
 export const REL_COLORS: Record<RelationType, string> = {
   尊敬: "#0ea5e9",
   信頼: "#10b981",
