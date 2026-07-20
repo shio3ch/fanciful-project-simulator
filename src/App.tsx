@@ -21,6 +21,12 @@ import EpisodeDetail from "./components/EpisodeDetail";
 import Retrospective from "./components/Retrospective";
 import SettingsModal from "./components/SettingsModal";
 import GeneratingOverlay from "./components/GeneratingOverlay";
+import {
+  describeGenerationError,
+  OPENAI_BILLING_URL,
+  OPENAI_LIMITS_URL,
+  type GenerationErrorDetails,
+} from "./lib/generationError";
 
 export default function App() {
   const [scenario, setScenario] = useState<Scenario>(SAMPLE_SCENARIOS[0]);
@@ -31,7 +37,7 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [progressChars, setProgressChars] = useState(0);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<GenerationErrorDetails | null>(null);
 
   const series = useMemo(() => computeSeries(scenario), [scenario]);
   const snapshot = series[selectedIndex];
@@ -52,6 +58,7 @@ export default function App() {
     } else {
       clearApiSettings();
     }
+    setError(null);
     setSettingsOpen(false);
   }
 
@@ -64,11 +71,7 @@ export default function App() {
       const next = await generateScenario(apiSettings, setProgressChars);
       loadScenario(next);
     } catch (e) {
-      setError(
-        e instanceof Error
-          ? `生成に失敗しました: ${e.message}`
-          : "生成に失敗しました。もう一度お試しください。",
-      );
+      setError(describeGenerationError(e, apiSettings.provider));
     } finally {
       setGenerating(false);
     }
@@ -85,11 +88,32 @@ export default function App() {
       />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 p-4">
         {error && (
-          <div className="flex items-center justify-between rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700">
-            <span>{error}</span>
-            <button onClick={handleGenerate} className="font-bold underline">
-              リトライ
-            </button>
+          <div className="flex items-start justify-between gap-3 rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+            <span>{error.message}</span>
+            {error.action === "retry" ? (
+              <button onClick={handleGenerate} className="shrink-0 font-bold underline">
+                リトライ
+              </button>
+            ) : (
+              <span className="flex shrink-0 gap-3 font-bold">
+                <a
+                  href={OPENAI_BILLING_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  請求設定
+                </a>
+                <a
+                  href={OPENAI_LIMITS_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  利用上限
+                </a>
+              </span>
+            )}
           </div>
         )}
         <ProjectSummary
