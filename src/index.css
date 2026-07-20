@@ -1,1 +1,148 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---- セマンティックトークン ---- */
+:root {
+  color-scheme: light;
+  --surface: #f6f7fb;
+  --card: #ffffff;
+  --card-raised: #eef1f8;
+  --ink: #1e2433;
+  --ink-muted: #64748b;
+  --line: #e2e8f0;
+  /* アクセント既定値（indigo）。data-status で上書きされる */
+  --accent: #6366f1;
+  --accent-soft: #eef2ff;
+  --accent-ink: #4338ca;
+  /* 人間関係マップの関係色 */
+  --rel-respect: #0284c7;
+  --rel-trust: #059669;
+  --rel-awkward: #d97706;
+  --rel-rival: #7c3aed;
+  --rel-buddy: #db2777;
+}
+
+/* ダーク: 夜のオフィス（深いネイビー、カードがわずかに浮く） */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #0d1220;
+  --card: #161d30;
+  --card-raised: #1f2740;
+  --ink: #e6eaf4;
+  --ink-muted: #8b94ab;
+  --line: #2a3352;
+  --accent: #818cf8;
+  --accent-soft: #272f55;
+  --accent-ink: #c7d2fe;
+  --rel-respect: #38bdf8;
+  --rel-trust: #34d399;
+  --rel-awkward: #fbbf24;
+  --rel-rival: #a78bfa;
+  --rel-buddy: #f472b6;
+}
+
+/* ---- ステータス連動アクセント ----
+   App ルートの data-status（STATUS_KEYS の値）で差し色が切り替わる */
+[data-status="calm"],
+[data-status="release"] {
+  --accent: #059669;
+  --accent-soft: #d1fae5;
+  --accent-ink: #047857;
+}
+[data-status="hazy"] {
+  --accent: #65a30d;
+  --accent-soft: #ecfccb;
+  --accent-ink: #4d7c0f;
+}
+[data-status="caution"] {
+  --accent: #d97706;
+  --accent-soft: #fef3c7;
+  --accent-ink: #b45309;
+}
+[data-status="flame"] {
+  --accent: #ea580c;
+  --accent-soft: #ffedd5;
+  --accent-ink: #c2410c;
+}
+[data-status="collapse"] {
+  --accent: #dc2626;
+  --accent-soft: #fee2e2;
+  --accent-ink: #b91c1c;
+}
+[data-status="miracle"] {
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --accent-ink: #0369a1;
+}
+
+[data-theme="dark"] [data-status="calm"],
+[data-theme="dark"] [data-status="release"] {
+  --accent: #34d399;
+  --accent-soft: #0f2e23;
+  --accent-ink: #6ee7b7;
+}
+[data-theme="dark"] [data-status="hazy"] {
+  --accent: #a3e635;
+  --accent-soft: #232e12;
+  --accent-ink: #bef264;
+}
+[data-theme="dark"] [data-status="caution"] {
+  --accent: #fbbf24;
+  --accent-soft: #33270d;
+  --accent-ink: #fcd34d;
+}
+[data-theme="dark"] [data-status="flame"] {
+  --accent: #fb923c;
+  --accent-soft: #371a0c;
+  --accent-ink: #fdba74;
+}
+[data-theme="dark"] [data-status="collapse"] {
+  --accent: #f87171;
+  --accent-soft: #380f12;
+  --accent-ink: #fca5a5;
+}
+[data-theme="dark"] [data-status="miracle"] {
+  --accent: #38bdf8;
+  --accent-soft: #0c2438;
+  --accent-ink: #7dd3fc;
+}
+
+/* ---- Tailwind ユーティリティへのマッピング ---- */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-raised: var(--card-raised);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+}
+
+/* ---- recharts のテーマ対応 ----
+   SVG presentation attribute は var() 非対応のため CSS で上書きする */
+.recharts-cartesian-axis-tick text {
+  fill: var(--ink-muted);
+}
+.recharts-reference-line line {
+  stroke: var(--accent);
+}
+.recharts-reference-line text {
+  fill: var(--accent);
+}
+.recharts-area-curve {
+  stroke: var(--accent);
+}
+.recharts-area-area {
+  fill: var(--accent-soft);
+}
+.recharts-tooltip-cursor {
+  stroke: var(--line);
+}
+
+/* ---- xyflow のテーマ対応 ---- */
+.react-flow__background circle {
+  fill: var(--line);
+}

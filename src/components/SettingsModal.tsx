@@ -18,11 +18,11 @@ export default function SettingsModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-lg bg-white p-5 shadow-xl"
+        className="w-full max-w-md rounded-2xl border border-line bg-card p-5 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-base font-bold">⚙️ 設定</h2>
@@ -31,7 +31,7 @@ export default function SettingsModal({
           <select
             value={selectedProvider}
             onChange={(e) => setSelectedProvider(e.target.value as ApiProvider)}
-            className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-line bg-card px-3 py-2 text-sm"
           >
             <option value="anthropic">Anthropic</option>
             <option value="openai">OpenAI</option>
@@ -44,7 +44,7 @@ export default function SettingsModal({
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder={selectedProvider === "anthropic" ? "sk-ant-..." : "sk-..."}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-md border border-line bg-card px-3 py-2 text-sm"
           />
         </label>
         <label className="mt-3 flex items-center gap-2 text-sm">
@@ -55,7 +55,7 @@ export default function SettingsModal({
           />
           このブラウザに保存する（localStorage）
         </label>
-        <p className="mt-3 rounded-md bg-amber-50 p-2 text-xs text-amber-800">
+        <p className="mt-3 rounded-md bg-amber-500/10 p-2 text-xs text-amber-600">
           キーはこのブラウザから
           {selectedProvider === "anthropic" ? " api.anthropic.com " : " api.openai.com "}
           へ直接送信され、他のサーバーには送られません。
@@ -64,13 +64,13 @@ export default function SettingsModal({
         <div className="mt-4 flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-100"
+            className="rounded-md border border-line px-3 py-1.5 text-sm hover:bg-card-raised"
           >
             キャンセル
           </button>
           <button
             onClick={() => onSave(selectedProvider, value.trim(), persist)}
-            className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
+            className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500"
           >
             保存
           </button>

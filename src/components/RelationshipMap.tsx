@@ -18,7 +18,9 @@ function buildNodes(members: Member[]): Node[] {
         fontSize: 10,
         padding: "4px 6px",
         borderRadius: 8,
-        border: "1px solid #cbd5e1",
+        border: "1px solid var(--line)",
+        background: "var(--card)",
+        color: "var(--ink)",
         width: "auto",
       },
     };
@@ -32,6 +34,7 @@ function buildEdges(relationships: Relationship[]): Edge[] {
     target: rel.to,
     label: `${rel.type} ${rel.score}`,
     labelStyle: { fontSize: 9, fill: REL_COLORS[rel.type] },
+    labelBgStyle: { fill: "var(--card)", fillOpacity: 0.9 },
     style: {
       stroke: REL_COLORS[rel.type],
       strokeWidth: Math.max(1, rel.score / 30),
@@ -52,8 +55,8 @@ export default function RelationshipMap({
   const edges = useMemo(() => buildEdges(relationships), [relationships]);
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-4">
-      <h2 className="mb-3 text-sm font-bold text-slate-700">🕸️ 人間関係マップ</h2>
+    <section className="rounded-2xl border border-line bg-card p-4">
+      <h2 className="mb-3 text-sm font-bold text-ink-muted">🕸️ 人間関係マップ</h2>
       <div className="h-72">
         <ReactFlow
           nodes={nodes}
@@ -69,10 +72,13 @@ export default function RelationshipMap({
           <Background gap={16} />
         </ReactFlow>
       </div>
-      <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-slate-500">
+      <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-ink-muted">
         {Object.entries(REL_COLORS).map(([type, color]) => (
           <span key={type} className="flex items-center gap-1">
-            <span className="inline-block h-2 w-4 rounded" style={{ backgroundColor: color }} />
+            <span
+              className="inline-block h-2 w-4 rounded"
+              style={{ backgroundColor: color }}
+            />
             {type}
           </span>
         ))}

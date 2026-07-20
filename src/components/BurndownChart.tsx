@@ -28,21 +28,30 @@ export default function BurndownChart({
   ];
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-4">
-      <h2 className="mb-3 text-sm font-bold text-slate-700">📉 バーンダウンチャート（残タスク数）</h2>
+    <section className="rounded-2xl border border-line bg-card p-4">
+      <h2 className="mb-3 text-sm font-bold text-ink-muted">
+        📉 バーンダウンチャート（残タスク数）
+      </h2>
       <div className="h-44">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
             <XAxis dataKey="name" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
             <YAxis tick={{ fontSize: 10 }} />
-            <Tooltip />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--card)",
+                border: "1px solid var(--line)",
+                borderRadius: 8,
+                fontSize: 12,
+              }}
+              labelStyle={{ color: "var(--ink-muted)" }}
+            />
             <ReferenceLine
               x={data[selectedIndex + 1].name}
-              stroke="#6366f1"
               strokeDasharray="4 4"
-              label={{ value: "現在", fontSize: 10, fill: "#6366f1" }}
+              label={{ value: "現在", fontSize: 10 }}
             />
-            <Area dataKey="tasks" stroke="#6366f1" fill="#e0e7ff" strokeWidth={2} />
+            <Area dataKey="tasks" strokeWidth={2} />
           </AreaChart>
         </ResponsiveContainer>
       </div>
